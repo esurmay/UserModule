@@ -1,5 +1,7 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
+using System.Web.Mvc;
 
 namespace UserModule.Models
 {
@@ -49,9 +51,13 @@ namespace UserModule.Models
     public class LoginViewModel
     {
         [Required]
-        [Display(Name = "Email")]
-        [EmailAddress]
-        public string Email { get; set; }
+        [Display(Name = "UserName")]
+        public string UserName { get; set; }
+
+        //[Required]
+        //[Display(Name = "Email")]
+        //[EmailAddress]
+        //public string Email { get; set; }
 
         [Required]
         [DataType(DataType.Password)]
@@ -65,9 +71,22 @@ namespace UserModule.Models
     public class RegisterViewModel
     {
         [Required]
-        [EmailAddress]
+        [Display(Name = "UserRoles")]
+        public string UserRoles { get; set; }
+
+        [Required(ErrorMessage = "{0} required")]
+        [DataType(DataType.EmailAddress)]
         [Display(Name = "Email")]
+        [RegularExpression(@"\w+([-+.']\w+)*@\w+([-.]\w+)*\.\w+([-.]\w+)*",
+         ErrorMessage = "Invalid email")]
+        [Remote("CheckUserName", "User", ErrorMessage = "Already in use!")]
+        [StringLength(100, ErrorMessage = "{0}: 100 is the limit")]
         public string Email { get; set; }
+
+        [Required]
+        [StringLength(15, ErrorMessage = "The {0} must be at least {2} characters long.", MinimumLength = 8)]
+        [Display(Name = "UserName")]
+        public string UserName { get; set; }
 
         [Required]
         [StringLength(100, ErrorMessage = "The {0} must be at least {2} characters long.", MinimumLength = 6)]
@@ -77,7 +96,7 @@ namespace UserModule.Models
 
         [DataType(DataType.Password)]
         [Display(Name = "Confirm password")]
-        [Compare("Password", ErrorMessage = "The password and confirmation password do not match.")]
+        [System.ComponentModel.DataAnnotations.Compare("Password", ErrorMessage = "The password and confirmation password do not match.")]
         public string ConfirmPassword { get; set; }
     }
 
@@ -96,7 +115,7 @@ namespace UserModule.Models
 
         [DataType(DataType.Password)]
         [Display(Name = "Confirm password")]
-        [Compare("Password", ErrorMessage = "The password and confirmation password do not match.")]
+        [System.ComponentModel.DataAnnotations.Compare("Password", ErrorMessage = "The password and confirmation password do not match.")]
         public string ConfirmPassword { get; set; }
 
         public string Code { get; set; }
