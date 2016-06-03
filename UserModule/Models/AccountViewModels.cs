@@ -79,7 +79,7 @@ namespace UserModule.Models
         [Display(Name = "Email")]
         [RegularExpression(@"\w+([-+.']\w+)*@\w+([-.]\w+)*\.\w+([-.]\w+)*",
          ErrorMessage = "Invalid email")]
-        [Remote("CheckUserName", "User", ErrorMessage = "Already in use!")]
+        [Remote("CheckEmail", "Account", ErrorMessage = "Email already exists!")]
         [StringLength(100, ErrorMessage = "{0}: 100 is the limit")]
         public string Email { get; set; }
 

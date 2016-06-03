@@ -18,15 +18,6 @@ namespace UserModule.Controllers
         private ApplicationSignInManager _signInManager;
         private ApplicationUserManager _userManager;
 
-        public AccountController()
-        {
-        }
-
-        public AccountController(ApplicationUserManager userManager, ApplicationSignInManager signInManager )
-        {
-            UserManager = userManager;
-            SignInManager = signInManager;
-        }
 
         public ApplicationSignInManager SignInManager
         {
@@ -34,9 +25,9 @@ namespace UserModule.Controllers
             {
                 return _signInManager ?? HttpContext.GetOwinContext().Get<ApplicationSignInManager>();
             }
-            private set 
-            { 
-                _signInManager = value; 
+            private set
+            {
+                _signInManager = value;
             }
         }
 
@@ -51,6 +42,17 @@ namespace UserModule.Controllers
                 _userManager = value;
             }
         }
+
+        public AccountController()
+        {
+        }
+
+        public AccountController(ApplicationUserManager userManager, ApplicationSignInManager signInManager )
+        {
+            UserManager = userManager;
+            SignInManager = signInManager;
+        }
+
 
         //
         // GET: /Account/Login
@@ -140,9 +142,6 @@ namespace UserModule.Controllers
         [AllowAnonymous]
         public ActionResult Register()
         {
-            
-            var context = new ApplicationDbContext();
-            ViewBag.Name = new SelectList(context.Users.Where(x => x.Roles.Select(y => y.RoleId).Contains("Super")).ToList(), "Name", "Name");
             return View();
         }
 
@@ -432,16 +431,37 @@ namespace UserModule.Controllers
         }
 
         [AllowAnonymous]
-        public async Task<JsonResult>  CheckUserName(string Username)
+        public JsonResult  CheckEmail(string email)
         {
              var result = true;
-            //var user = db.Users.Where(x => x.Email == Email).FirstOrDefault();
-            var user = await UserManager.FindByNameAsync(Username); 
+             var user = UserManager.FindByEmail(email); 
             if (user != null)
                 result = false;
 
             return Json(result, JsonRequestBehavior.AllowGet);
         }
+
+        //public JsonResult IsUID_Available(string Username)
+        //{
+
+        //    if (!_repository.UserExists(Username))
+        //        return Json(true, JsonRequestBehavior.AllowGet);
+
+        //    string suggestedUID = String.Format(CultureInfo.InvariantCulture,
+        //        "{0} is not available.", Username);
+
+        //    for (int i = 1; i < 100; i++)
+        //    {
+        //        string altCandidate = Username + i.ToString();
+        //        if (!_repository.UserExists(altCandidate))
+        //        {
+        //            suggestedUID = String.Format(CultureInfo.InvariantCulture,
+        //           "{0} is not available. Try {1}.", Username, altCandidate);
+        //            break;
+        //        }
+        //    }
+        //    return Json(suggestedUID, JsonRequestBehavior.AllowGet);
+        //}
 
         #region Helpers
         // Used for XSRF protection when adding external logins

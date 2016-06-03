@@ -11,11 +11,13 @@ namespace UserModule.Models
         public string Id { get; set; }
         public string UserRoles { get; set; }
 
+        [Required]
         public string Email { get; set; }
 
         [Display(Name = "User Name")]
         public string UserName { get; set; }
 
+        [Required]
         [DataType(DataType.Password)]
         public string Password { get; set; }
 
@@ -26,10 +28,10 @@ namespace UserModule.Models
         public string LastName { get; set; }
 
         [Display(Name = "Creation Date")]
-        public DateTime CreationDate { get; set; }
+        public DateTime? CreationDate { get; set; }
 
         [Display(Name = "Modified Date")]
-        public DateTime ModifiedDate { get; set; }
+        public DateTime? ModifiedDate { get; set; }
     }
 
 }

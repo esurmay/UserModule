@@ -9,7 +9,8 @@ using UserModule.Models;
 
 namespace UserModule.Controllers
 {
-    [Authorize(Roles = "Super, Admin")]
+  //  [Authorize(Roles = "Super, Admin")]
+    [Authorize]
     public class UsersController : Controller
     {
         #region /// PROPERTIES AND CONSTRUCTOR ///
@@ -65,6 +66,13 @@ namespace UserModule.Controllers
                 {
                     ViewBag.displayMenu = "Yes";
                 }
+                else {
+                    //    var result = new FilePathResult("~/Views/Users/Profile.html", "text/html");
+                    //return result;
+                    return View("Profiles");
+                }
+
+
                 return View();
             }
             else
